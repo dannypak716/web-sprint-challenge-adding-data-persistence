@@ -14,11 +14,20 @@ async function postProject(project) {
     return newProject
 }
 
-function getProjects() {
-    return db('projects')
+async function getProjects() {
+    const projects = await db('projects')
+
+    projects.map(project => {
+        if (project.project_completed === 0) {
+            project.project_completed = false
+        } else {
+            project.project_completed = true
+        }
+    })
+    return projects
 }
 
 module.exports = {
     postProject,
     getProjects,
-} 
+}
